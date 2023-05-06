@@ -1,0 +1,99 @@
+@page
+@model Vivacity.Pages.Employees.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Employees</h1>
+
+<p>
+    <a asp-page="Create">Add New Employee</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th> 
+                @{
+                    var idSort = "id_asc";
+                    if(Model.CurrentSort==idSort){
+                        idSort="id_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@idSort" asp-route-Search="@Model.Search">ID</a>
+            </th>
+            <th>
+                @{
+                    var firstSort = "first_asc";
+                    if(Model.CurrentSort==firstSort){
+                        firstSort="first_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@firstSort" asp-route-Search="@Model.Search">First Name</a>
+            </th>
+            <th>
+                 @{
+                    var lastSort = "last_asc";
+                    if(Model.CurrentSort==lastSort){
+                        lastSort = "last_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@lastSort" asp-route-Search="@Model.Search">Last Name</a>
+            </th>
+            <th>
+                @{
+                    var dateSort = "date_asc";
+                    if(Model.CurrentSort==dateSort){
+                        dateSort = "date_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@dateSort" asp-route-Search="@Model.Search">Hire Date</a>
+            </th>
+            <th>
+                @{
+                    var salSort = "sal_asc";
+                    if(Model.CurrentSort==salSort){
+                        salSort = "sal_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@salSort" asp-route-Search="@Model.Search">Salary</a>
+            </th>
+            <th>
+                @{
+                    var plantSort = "plant_asc";
+                    if(Model.CurrentSort==plantSort){
+                        plantSort = "plant_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@plantSort" asp-route-Search="@Model.Search">Plant</a>
+            </th>
+            <th>
+                <form>
+                    <input type="hidden" asp-for="CurrentSort"/>
+                    <input type="text" asp-for="Search"/>
+                    <input type="submit" value="Search"/>
+                </form>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Employees) {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.HireDate.ToShortDateString()</td>
+                <td>@item.Salary.ToString("C2")</td>
+                <td><a asp-route-id="@item.Plant.ID" asp-page="/Plants/Details">@item.Plant.Name</a></td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+        @if(Model.Employees.Count()==0){
+            <p class="text-danger">No results found</p>
+        }
+    </tbody>
+</table>

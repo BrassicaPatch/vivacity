@@ -1,0 +1,90 @@
+@page
+@model Vivacity.Pages.Machines.IndexModel
+
+@{
+    ViewData["Title"] = "Machines";
+}
+
+<h1>Machines</h1>
+
+<p>
+    <a asp-page="Create">Add New Machine</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @{
+                    var typeSort = "type_asc";
+                    if(Model.CurrentSort==typeSort){
+                        typeSort="type_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@typeSort">@Html.DisplayNameFor(model => model.Machine[0].MachineType)</a>
+            </th>
+            <th>
+                @{
+                    var modelSort = "model_asc";
+                    if(Model.CurrentSort==modelSort){
+                        modelSort = "model_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@modelSort">@Html.DisplayNameFor(model => model.Machine[0].ModelNumber)</a>
+            </th>
+            <th>
+                @{
+                    var dateSort = "date_asc";
+                    if(Model.CurrentSort==dateSort){
+                        dateSort="date_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@dateSort">@Html.DisplayNameFor(model => model.Machine[0].PurchaseDate)</a>
+            </th>
+            <th>
+                @{
+                    var costSort = "cost_asc";
+                    if(Model.CurrentSort==costSort){
+                        costSort="cost_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@costSort">@Html.DisplayNameFor(model => model.Machine[0].PurchaseCost)</a>
+            </th>
+            <th>
+                @{
+                    var plantSort = "plant_asc";
+                    if(Model.CurrentSort==plantSort){
+                        plantSort="plant_dsc";
+                    }
+                }
+                <a asp-page="./Index" asp-route-CurrentSort="@plantSort">@Html.DisplayNameFor(model => model.Machine[0].Plant)</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Machine) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModelNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchaseCost)
+                </td>
+                <td>
+                    <a asp-page="/Plants/Details" asp-route-id="@item.Plant.ID">@Html.DisplayFor(modelItem => item.Plant.Name)</a>
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

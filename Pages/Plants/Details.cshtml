@@ -1,0 +1,128 @@
+@page
+@model Vivacity.Pages.Plants.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Plant</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plant.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plant.Address)
+        </dd>
+    </dl>
+    <hr />
+    <div class="row">
+        <div class="col-6 border">
+            <h5>Plant Employees</h5>
+            <table class="table border">
+                <thead>
+                    <tr>
+                        <th>
+                            @{
+                                var idSort = "id_asc";
+                                if(Model.CurrentSort==idSort){
+                                    idSort="id_dsc";
+                                }
+                            }
+                            <a asp-page="./Details" asp-route-id="@Model.Plant.ID" asp-route-PageNum="@Model.PageNum" asp-route-CurrentSort="@idSort">Employee ID</a>
+                        </th>
+                        <th>
+                            @{
+                                var firstSort = "first_asc";
+                                if(Model.CurrentSort==firstSort){
+                                    firstSort="first_dsc";
+                                }
+                            }
+                            <a asp-page="./Details" asp-route-id="@Model.Plant.ID" asp-route-PageNum="@Model.PageNum" asp-route-CurrentSort="@firstSort">First Name</a>
+                        </th>
+                        <th>
+                            @{
+                                var lastSort = "last_asc";
+                                if(Model.CurrentSort==lastSort){
+                                    lastSort="last_dsc";
+                                }
+                            }
+                            <a asp-page="./Details" asp-route-id="@Model.Plant.ID" asp-route-PageNum="@Model.PageNum" asp-route-CurrentSort="@lastSort">Last Name</a>
+                        </th>
+                        <th>
+                            @{
+                                var emailSort = "email_asc";
+                                if(Model.CurrentSort==emailSort){
+                                    emailSort="email_dsc";
+                                }
+                            }
+                            <a asp-page="./Details" asp-route-id="@Model.Plant.ID" asp-route-PageNum="@Model.PageNum" asp-route-CurrentSort="@emailSort">Email</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var e in Model.Employees){
+                        <tr>
+                            <td><a asp-route-id="@e.ID" asp-page="/Employees/Details">@e.ID</a></td>
+                            <td>@e.FirstName</td>
+                            <td>@e.LastName</td>
+                            <td>@e.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <hr/>
+            @{
+                var prevDisabled="";
+                if(Model.PageNum<=1){
+                    prevDisabled="disabled";
+                }
+
+                var nextDisabled="";
+                if(((Model.PageNum+1)*Model.PageSize)>Model.Plant.Employees.Count()){
+                    nextDisabled="disabled";
+                }
+            }
+            <nav aria-label="Page Navigation">
+                <ul class="pagination">
+                    <li class="page-item @prevDisabled"><a class="page-link" asp-page="./Details" asp-route-id="@Model.Plant.ID" asp-route-PageNum="@(Model.PageNum-1)" asp-route-CurrentSort="@Model.CurrentSort">Previous</a></li>
+                    <li class="page-item @nextDisabled"><a class="page-link" asp-page="./Details" asp-route-id="@Model.Plant.ID" asp-route-PageNum="@(Model.PageNum+1)" asp-route-CurrentSort="@Model.CurrentSort">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-6 border">
+            <h5>Plant Machines</h5>
+            <table class="table border">
+                <thead>
+                    <tr>
+                        <th>Machine ID</th>
+                        <th>Machine Type</th>
+                        <th>Model Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.Plant.Machines){
+                        <tr>
+                            <td><a asp-route-id="@m.ID" asp-page="/Machines/Details">Machine @m.ID</a></td>
+                            <td>@m.MachineType</td>
+                            <td>@m.ModelNumber</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Plant?.ID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
